@@ -36,7 +36,7 @@ HTML_TEMPLATE = '''
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 24px;
@@ -55,12 +55,65 @@ HTML_TEMPLATE = '''
             text-align: center;
             font-size: 2.5em;
             font-weight: 700;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .size-selector {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .size-selector label {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #4a5568;
+            margin-right: 15px;
+        }
+
+        .size-selector select {
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            color: #2d3748;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .size-selector select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .size-selector button {
+            margin-left: 15px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .size-selector button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
         }
 
         form { 
@@ -93,14 +146,14 @@ HTML_TEMPLATE = '''
         }
 
         input[type="number"] {
-            width: 60px;
-            height: 60px;
-            padding: 8px;
-            margin: 6px;
+            width: 50px;
+            height: 50px;
+            padding: 6px;
+            margin: 3px;
             text-align: center;
             border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1.2em;
+            border-radius: 8px;
+            font-size: 1em;
             font-weight: 600;
             background: rgba(255, 255, 255, 0.9);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -111,9 +164,9 @@ HTML_TEMPLATE = '''
             outline: none;
             border-color: #667eea;
             box-shadow: 
-                0 0 0 4px rgba(102, 126, 234, 0.1),
+                0 0 0 3px rgba(102, 126, 234, 0.1),
                 0 4px 16px rgba(102, 126, 234, 0.2);
-            transform: translateY(-2px);
+            transform: translateY(-1px);
             background: white;
         }
 
@@ -164,19 +217,19 @@ HTML_TEMPLATE = '''
 
         table { 
             border-collapse: separate;
-            border-spacing: 8px;
+            border-spacing: 6px;
             margin: 0 auto;
         }
 
         td {
             border: 2px solid #667eea;
-            padding: 15px;
-            min-width: 60px;
-            height: 60px;
+            padding: 10px;
+            min-width: 50px;
+            height: 50px;
             text-align: center;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
-            border-radius: 12px;
-            font-size: 1.3em;
+            border-radius: 8px;
+            font-size: 1.1em;
             font-weight: 700;
             color: #2d3748;
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
@@ -201,8 +254,8 @@ HTML_TEMPLATE = '''
         }
 
         td:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
         }
 
         input[type="submit"] {
@@ -279,7 +332,18 @@ HTML_TEMPLATE = '''
         .matrix-row {
             display: flex;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            background: rgba(254, 202, 202, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            margin: 20px 0;
+            border: 2px solid #feb2b2;
         }
 
         @media (max-width: 768px) {
@@ -303,31 +367,49 @@ HTML_TEMPLATE = '''
             }
             
             input[type="number"] {
-                width: 50px;
-                height: 50px;
-                font-size: 1em;
+                width: 40px;
+                height: 40px;
+                font-size: 0.9em;
             }
             
             td {
-                min-width: 50px;
-                height: 50px;
-                font-size: 1.1em;
-                padding: 10px;
+                min-width: 40px;
+                height: 40px;
+                font-size: 1em;
+                padding: 8px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>2x2 Matrix Multiplication</h2>
+        <h2>n×n Matrix Multiplication</h2>
+        
+        <div class="size-selector">
+            <form method="get">
+                <label for="size">Matrix Size:</label>
+                <select name="size" id="size">
+                    {% for i in range(2, 11) %}
+                        <option value="{{ i }}" {% if i == size %}selected{% endif %}>{{ i }}×{{ i }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Update Size</button>
+            </form>
+        </div>
+
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        
         <form method="post">
+            <input type="hidden" name="size" value="{{ size }}">
             <div class="matrices-container">
                 <div class="matrix">
-                    <h4>Matrix A</h4>
-                    {% for i in range(2) %}
+                    <h4>Matrix A ({{ size }}×{{ size }})</h4>
+                    {% for i in range(size) %}
                         <div class="matrix-row">
-                            {% for j in range(2) %}
-                                <input type="number" name="a{{i}}{{j}}" required>
+                            {% for j in range(size) %}
+                                <input type="number" name="a{{ i }}{{ j }}" value="{{ matrix_a[i][j] if matrix_a and i < matrix_a|length and j < matrix_a[i]|length else '' }}" required>
                             {% endfor %}
                         </div>
                     {% endfor %}
@@ -336,23 +418,24 @@ HTML_TEMPLATE = '''
                 <div class="multiply-symbol">×</div>
                 
                 <div class="matrix">
-                    <h4>Matrix B</h4>
-                    {% for i in range(2) %}
+                    <h4>Matrix B ({{ size }}×{{ size }})</h4>
+                    {% for i in range(size) %}
                         <div class="matrix-row">
-                            {% for j in range(2) %}
-                                <input type="number" name="b{{i}}{{j}}" required>
+                            {% for j in range(size) %}
+                                <input type="number" name="b{{ i }}{{ j }}" value="{{ matrix_b[i][j] if matrix_b and i < matrix_b|length and j < matrix_b[i]|length else '' }}" required>
                             {% endfor %}
                         </div>
                     {% endfor %}
                 </div>
             </div>
-            <input type="submit" value="Multiply">
+            <input type="submit" value="Multiply Matrices">
         </form>
+        
         {% if result %}
             <h3>Result:</h3>
             <div class="result-container">
                 <div class="matrix">
-                    <h4>A × B</h4>
+                    <h4>A × B ({{ size }}×{{ size }})</h4>
                     <table>
                         {% for row in result %}
                             <tr>
@@ -369,28 +452,61 @@ HTML_TEMPLATE = '''
 </body>
 </html>
 '''
+
 @app.route('/', methods=['GET', 'POST'])
 def multiply_matrices():
+    size = int(request.args.get('size', 2))  # Default to 2x2
+    if size < 2 or size > 10:
+        size = 2
+    
     result = None
+    error = None
+    matrix_a = None
+    matrix_b = None
+    
     if request.method == 'POST':
+        size = int(request.form.get('size', 2))
         try:
             # Read Matrix A
-            matrix_a = [
-                [int(request.form['a00']), int(request.form['a01'])],
-                [int(request.form['a10']), int(request.form['a11'])]
-            ]
+            matrix_a = []
+            for i in range(size):
+                row = []
+                for j in range(size):
+                    val = request.form.get(f'a{i}{j}')
+                    if val is None or val == '':
+                        raise ValueError("Missing values in Matrix A")
+                    row.append(int(val))
+                matrix_a.append(row)
+            
             # Read Matrix B
-            matrix_b = [
-                [int(request.form['b00']), int(request.form['b01'])],
-                [int(request.form['b10']), int(request.form['b11'])]
-            ]
+            matrix_b = []
+            for i in range(size):
+                row = []
+                for j in range(size):
+                    val = request.form.get(f'b{i}{j}')
+                    if val is None or val == '':
+                        raise ValueError("Missing values in Matrix B")
+                    row.append(int(val))
+                matrix_b.append(row)
+            
             # Matrix multiplication logic
-            result = [[0, 0], [0, 0]]
-            for i in range(2):
-                for j in range(2):
-                    result[i][j] = matrix_a[i][0] * matrix_b[0][j] + matrix_a[i][1] * matrix_b[1][j]
-        except ValueError:
-            result = [["Error", "in"], ["input", "!"]]
-    return render_template_string(HTML_TEMPLATE, result=result)
+            result = [[0 for _ in range(size)] for _ in range(size)]
+            for i in range(size):
+                for j in range(size):
+                    for k in range(size):
+                        result[i][j] += matrix_a[i][k] * matrix_b[k][j]
+                        
+        except ValueError as e:
+            error = f"Error: {str(e)}. Please enter valid numbers in all fields."
+        except Exception as e:
+            error = f"Error: {str(e)}"
+    
+    return render_template_string(HTML_TEMPLATE, 
+                                result=result, 
+                                size=size, 
+                                error=error,
+                                matrix_a=matrix_a,
+                                matrix_b=matrix_b)
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
