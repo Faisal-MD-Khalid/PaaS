@@ -1,3 +1,8 @@
+from flask import Flask, render_template_string
+
+app = Flask(__name__)
+
+# HTML template as a string (Design Updated ONLY)
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
@@ -6,15 +11,6 @@ HTML_TEMPLATE = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Even Numbers Generator</title>
     <style>
-        :root {
-            --primary: #667eea;
-            --secondary: #764ba2;
-            --background: #f4f7fa;
-            --white: #fff;
-            --text-dark: #2c3e50;
-            --text-light: #7f8c8d;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -22,8 +18,8 @@ HTML_TEMPLATE = """
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--background);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #74ebd5 0%, #ACB6E5 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -32,118 +28,93 @@ HTML_TEMPLATE = """
         }
 
         .container {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.2);
             padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
             max-width: 600px;
             width: 100%;
             text-align: center;
-            border: 1px solid #e0e0e0;
         }
 
         h1 {
-            font-size: 2.3em;
-            font-weight: 600;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #fff;
             margin-bottom: 25px;
+            font-size: 2.5em;
+            font-weight: 600;
         }
 
         label {
-            font-size: 1.1em;
-            font-weight: 500;
-            color: var(--text-dark);
             display: block;
             margin-bottom: 10px;
+            color: #fff;
+            font-size: 1.1em;
         }
 
         input[type="number"] {
-            width: 100%;
-            max-width: 250px;
-            padding: 12px 16px;
-            font-size: 1.1em;
+            padding: 12px 20px;
             border-radius: 10px;
-            border: 2px solid #ccc;
-            transition: 0.3s ease;
-        }
-
-        input[type="number"]:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.2);
-            outline: none;
+            border: none;
+            font-size: 1.2em;
+            text-align: center;
+            width: 100%;
+            max-width: 200px;
+            margin-bottom: 20px;
         }
 
         .btn {
-            display: inline-block;
-            margin: 10px 8px;
+            background: #667eea;
+            color: white;
+            border: none;
             padding: 12px 25px;
             font-size: 1em;
             border-radius: 30px;
-            border: none;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: 0.3s ease;
+            margin: 5px;
         }
 
         .btn:hover {
+            background: #5a67d8;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
         .result {
             margin-top: 30px;
             padding: 20px;
-            background: #eef2f7;
-            border-radius: 12px;
-            border-left: 4px solid var(--primary);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
             display: none;
-            text-align: left;
         }
 
         .result.show {
             display: block;
-            animation: fadeInUp 0.4s ease-out;
-        }
-
-        .result h3 {
-            color: var(--text-dark);
-            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease-in-out;
         }
 
         .numbers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
             gap: 10px;
+            margin-top: 15px;
         }
 
         .number-item {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: #667eea;
             color: white;
-            font-weight: 600;
-            border-radius: 8px;
             padding: 10px;
-            text-align: center;
-            transition: transform 0.3s ease;
-        }
-
-        .number-item:hover {
-            transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
-        }
-
-        .error {
-            background: #ffe5e5;
-            color: #c0392b;
-            border-left: 4px solid #e74c3c;
+            border-radius: 10px;
+            font-weight: bold;
         }
 
         .loading {
-            margin-top: 15px;
-            color: var(--primary);
+            color: #333;
             font-style: italic;
+            margin-top: 10px;
             display: none;
         }
 
@@ -151,10 +122,16 @@ HTML_TEMPLATE = """
             display: block;
         }
 
-        @keyframes fadeInUp {
+        .error {
+            border-left-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(20px);
+                transform: translateY(10px);
             }
             to {
                 opacity: 1;
@@ -162,13 +139,9 @@ HTML_TEMPLATE = """
             }
         }
 
-        @media (max-width: 480px) {
-            .container {
-                padding: 25px;
-            }
-
+        @media (max-width: 500px) {
             h1 {
-                font-size: 1.8em;
+                font-size: 2em;
             }
 
             input[type="number"] {
@@ -179,18 +152,20 @@ HTML_TEMPLATE = """
 </head>
 <body>
     <div class="container">
-        <h1>✨ Even Numbers Generator</h1>
+        <h1>Even Numbers Generator</h1>
+        
         <form id="evenForm">
-            <label for="numberInput">Enter number of even numbers:</label>
+            <label for="numberInput">Enter the count of even numbers:</label>
             <input type="number" id="numberInput" name="n" min="1" max="1000" value="10" required>
+            
             <div>
-                <button type="submit" class="btn">Generate</button>
+                <button type="submit" class="btn">Generate Numbers</button>
                 <button type="button" class="btn" onclick="clearResult()">Clear</button>
             </div>
         </form>
 
         <div class="loading" id="loading">Generating numbers...</div>
-
+        
         <div class="result" id="result">
             <h3 id="resultTitle"></h3>
             <div class="numbers-grid" id="numbersGrid"></div>
@@ -217,12 +192,16 @@ HTML_TEMPLATE = """
         function generateEvenNumbers(n) {
             loading.classList.add('show');
             result.classList.remove('show');
+
             setTimeout(() => {
                 try {
                     const evenNumbers = [];
-                    for (let i = 1; i <= n; i++) evenNumbers.push(2 * i);
+                    for (let i = 1; i <= n; i++) {
+                        evenNumbers.push(2 * i);
+                    }
+
                     displayResult(n, evenNumbers);
-                } catch {
+                } catch (error) {
                     showError('An error occurred while generating numbers.');
                 } finally {
                     loading.classList.remove('show');
@@ -231,21 +210,22 @@ HTML_TEMPLATE = """
         }
 
         function displayResult(n, numbers) {
-            resultTitle.textContent = `First ${n} even numbers:`;
+            resultTitle.textContent = `The first ${n} even numbers are:`;
             numbersGrid.innerHTML = '';
-            numbers.forEach((num, i) => {
-                const el = document.createElement('div');
-                el.className = 'number-item';
-                el.textContent = num;
-                el.style.animationDelay = `${i * 0.03}s`;
-                numbersGrid.appendChild(el);
+            numbers.forEach((num, index) => {
+                const numElement = document.createElement('div');
+                numElement.className = 'number-item';
+                numElement.textContent = num;
+                numElement.style.animationDelay = `${index * 0.05}s`;
+                numbersGrid.appendChild(numElement);
             });
+
             result.className = 'result show';
         }
 
         function showError(message) {
             resultTitle.textContent = 'Error';
-            numbersGrid.innerHTML = `<div style="grid-column: 1 / -1;">${message}</div>`;
+            numbersGrid.innerHTML = `<div style="grid-column: 1 / -1; font-weight: 500;">${message}</div>`;
             result.className = 'result show error';
             loading.classList.remove('show');
         }
@@ -262,3 +242,13 @@ HTML_TEMPLATE = """
 </html>
 """
 
+@app.route('/')
+def home():
+    return render_template_string(HTML_TEMPLATE)
+
+@app.route('/health')
+def health_check():
+    return {"status": "healthy"}, 200
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8080, debug=True)
