@@ -131,247 +131,114 @@ def validate_user(username, password, email=None, phone=None):
         if connection and connection.is_connected():
             connection.close()
 
-# HTML template for login form - MODIFIED INTERFACE
+# HTML template for login form
 LOGIN_TEMPLATE = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Login Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Enhanced User Login Validation</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body { 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            font-family: Arial, sans-serif; 
+            max-width: 500px; 
+            margin: 50px auto; 
+            padding: 20px; 
+            background-color: #f5f5f5;
         }
-        
-        .login-container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
+        .form-group { margin-bottom: 20px; }
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: bold; 
+            color: #333;
         }
-        
-        .logo h1 {
-            color: #2d3748;
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-        
-        .logo p {
-            color: #718096;
-            font-size: 14px;
-            font-weight: 400;
-        }
-        
-        .form-section {
-            margin-bottom: 25px;
-        }
-        
-        .section-title {
-            color: #2d3748;
+        input[type="text"], input[type="password"], input[type="email"], input[type="tel"] { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #ddd; 
+            border-radius: 6px; 
             font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
         }
-        
-        .section-title::before {
-            content: "";
-            width: 4px;
-            height: 16px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            margin-right: 10px;
-            border-radius: 2px;
-        }
-        
-        .input-group {
-            margin-bottom: 20px;
-            position: relative;
-        }
-        
-        .input-group label {
-            display: block;
-            color: #4a5568;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-        
-        .required-star {
-            color: #e53e3e;
-            margin-left: 4px;
-        }
-        
-        .input-field {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            background: #ffffff;
-        }
-        
-        .input-field:focus {
+        input:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
+            border-color: #4CAF50;
         }
-        
-        .input-field::placeholder {
-            color: #a0aec0;
-        }
-        
-        .optional-text {
-            color: #718096;
-            font-size: 12px;
-            margin-top: 5px;
-            font-style: italic;
-        }
-        
-        .divider {
-            margin: 30px 0;
-            position: relative;
-            text-align: center;
-        }
-        
-        .divider::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
-        }
-        
-        .divider-text {
-            background: rgba(255, 255, 255, 0.95);
-            color: #718096;
-            padding: 0 20px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        
-        .login-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 12px;
+        button { 
+            background-color: #4CAF50; 
+            color: white; 
+            padding: 12px 20px; 
+            border: none; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            width: 100%; 
             font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
         }
-        
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        button:hover { background-color: #45a049; }
+        button:active { background-color: #3d8b40; }
+        .message { 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 6px; 
+            font-weight: bold;
         }
-        
-        .login-btn:active {
-            transform: translateY(0);
+        .success { 
+            background-color: #d4edda; 
+            color: #155724; 
+            border: 2px solid #c3e6cb; 
         }
-        
-        .message {
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-weight: 500;
-            text-align: center;
+        .error { 
+            background-color: #f8d7da; 
+            color: #721c24; 
+            border: 2px solid #f5c6cb; 
         }
-        
-        .success {
-            background: linear-gradient(135deg, #48bb78, #38a169);
-            color: white;
-            border: none;
+        .optional { 
+            color: #666; 
+            font-size: 0.9em; 
+            font-style: italic; 
+            margin-top: 5px;
         }
-        
-        .error {
-            background: linear-gradient(135deg, #f56565, #e53e3e);
-            color: white;
-            border: none;
+        .divider { 
+            margin: 25px 0; 
+            border-top: 2px solid #eee; 
+            padding-top: 20px; 
         }
-        
-        .footer-links {
-            text-align: center;
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
+        .info-box { 
+            background-color: #e3f2fd; 
+            color: #1565c0; 
+            padding: 20px; 
+            border-radius: 6px; 
+            margin-bottom: 25px; 
+            border-left: 5px solid #2196f3; 
         }
-        
-        .footer-links a {
-            color: #667eea;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-        
-        .footer-links a:hover {
-            color: #764ba2;
-        }
-        
-        .info-badge {
-            background: linear-gradient(135deg, #4299e1, #3182ce);
-            color: white;
-            padding: 12px 16px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            font-size: 14px;
-            text-align: center;
-        }
-        
-        @media (max-width: 480px) {
-            .login-container {
-                padding: 30px 25px;
-            }
-            
-            .logo h1 {
-                font-size: 24px;
-            }
+        .required { color: #e74c3c; font-weight: bold; }
+        h2 { color: #333; text-align: center; margin-bottom: 30px; }
+        .footer-info { 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee; 
+            color: #666; 
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo">
-            <h1>SecureAccess</h1>
-            <p>Advanced Authentication System</p>
-        </div>
+    <div class="container">
+        <h2>Enhanced User Login Validation</h2>
         
-        <div class="info-badge">
-            🔐 Multi-factor authentication with optional email & phone verification
+        <div class="info-box">
+            <strong>Multi-Factor Validation:</strong> Enter your username and password. 
+            Optionally provide email and/or phone number for additional security verification.
         </div>
         
         {% if message %}
@@ -379,53 +246,47 @@ LOGIN_TEMPLATE = """
         {% endif %}
         
         <form method="POST" action="/login">
-            <div class="form-section">
-                <div class="section-title">Primary Credentials</div>
-                
-                <div class="input-group">
-                    <label for="username">Username<span class="required-star">*</span></label>
-                    <input type="text" id="username" name="username" class="input-field" required 
-                           value="{{ request.form.username if request.form.username else '' }}"
-                           placeholder="Enter your username">
-                </div>
-                
-                <div class="input-group">
-                    <label for="password">Password<span class="required-star">*</span></label>
-                    <input type="password" id="password" name="password" class="input-field" required
-                           placeholder="Enter your password">
-                </div>
+            <div class="form-group">
+                <label for="username">Username <span class="required">*</span></label>
+                <input type="text" id="username" name="username" required 
+                       value="{{ request.form.username if request.form.username else '' }}"
+                       placeholder="Enter your username">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password <span class="required">*</span></label>
+                <input type="password" id="password" name="password" required
+                       placeholder="Enter your password">
             </div>
             
             <div class="divider">
-                <span class="divider-text">Enhanced Security</span>
+                <strong>Additional Verification</strong>
+                <div class="optional">Optional - provides enhanced security</div>
             </div>
             
-            <div class="form-section">
-                <div class="section-title">Additional Verification</div>
-                
-                <div class="input-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="email" class="input-field"
-                           placeholder="your.email@example.com"
-                           value="{{ request.form.email if request.form.email else '' }}">
-                    <div class="optional-text">Optional - Leave blank to skip email verification</div>
-                </div>
-                
-                <div class="input-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" class="input-field"
-                           placeholder="+1 (555) 123-4567"
-                           value="{{ request.form.phone if request.form.phone else '' }}">
-                    <div class="optional-text">Optional - Leave blank to skip phone verification</div>
-                </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" 
+                       placeholder="your.email@example.com"
+                       value="{{ request.form.email if request.form.email else '' }}">
+                <div class="optional">Leave blank if you don't want to verify email</div>
             </div>
             
-            <button type="submit" class="login-btn">Authenticate</button>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" 
+                       placeholder="e.g., +1234567890"
+                       value="{{ request.form.phone if request.form.phone else '' }}">
+                <div class="optional">Leave blank if you don't want to verify phone</div>
+            </div>
+            
+            <button type="submit">Validate Login</button>
         </form>
         
-        <div class="footer-links">
-            <a href="/debug">System Diagnostics</a> | 
-            <a href="/health">Health Check</a>
+        <div class="footer-info">
+            <p><strong>Test with your existing database credentials</strong></p>
+            <p><small><span class="required">*</span> Required fields | Additional fields are optional but provide extra security</small></p>
+            <p><small>Visit <a href="/debug">/debug</a> to check database connection and data</small></p>
         </div>
     </div>
 </body>
